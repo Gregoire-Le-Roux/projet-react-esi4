@@ -15,11 +15,11 @@ Groupe : Grégoire LEROUX (Back) / Florian BERTHELOT (Front)
 Site de e-commerce gérant la vente de Surf. 
 Plusieurs pages prévues :
 
-\_FRONT :\_
+FRONT :
 - Page Présentation
 - Page Connexion
 - Page Panier
 
-\_BACK :\_
+BACK :
 - Page Commandes
 - Page Produits
