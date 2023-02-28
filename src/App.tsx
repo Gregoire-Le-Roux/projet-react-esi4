@@ -1,11 +1,21 @@
 import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+// import DashboardAdmin from './back-office/Dashboard';
 
+// react-router-dom permet de définir des routes liées à des composants
 function App() {
-
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Router>
+      <Routes>
+        {/* <Route index element={<Home/>} /> */}
+        {/* <Route path="/connexion" element={<Authentification/>} /> */}
+        {/* <Route path="/dashboard" element={<DashboardAdmin/>} /> */}
+      </Routes>
+    </Router>
   )
 }
 
