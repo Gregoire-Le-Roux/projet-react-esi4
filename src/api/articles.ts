@@ -1,22 +1,22 @@
 import { db } from "../config/firebase";
 import { addDoc, collection, deleteDoc, doc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
-import { Command } from "../models/Commands";
+import { Article } from "../models/Articles";
 
-const col = 'commands'
+const col = 'articles'
 
-export async function getCommands() {
-    let data: Array<Command> = [];
+export async function getArticles() {
+    let data: Array<Article> = [];
     try {
         // Récupère les documents d'une collection sur Firebase que l'on passe en paramètre
         const querySnapshot = await getDocs(collection(db, col));
         querySnapshot.forEach((doc) => {
             // doc.data() n'est jamais undefined pour les documents d'une querySnapshot
-            let command = {
+            let article = {
                 _id: doc.id,
                 ...doc.data(),
-            } as Command;
-            if(command._id && command.client && command.price >= 0 && command.createdAt && command.status)
-            data.push(command);
+            } as Article;
+            if(article._id && article.name && article.price >= 0 && article.createdAt)
+            data.push(article);
           });
         return data;
     } catch(error) {
@@ -26,39 +26,39 @@ export async function getCommands() {
     }
 }
 
-export async function addCommand() {
+// Créer un article
+export async function addArticle(article: Article) {
     try {
-        let command = {
-            client: "Grégoire",
-            articles: '3 articles',
-            price: 40,
-            status: 'En cours',
+        console.log(article)
+        article = {
+            ...article,
             createdAt: Timestamp.now(),
         };
+        if(!article.price) article.price = 0;
         await addDoc(collection(db, col), {
-            ...command,
+            ...article,
         })
     } catch(err) {
         console.log(err);
     }
 }
 
-// Mettre à jour une commande
-export async function updateCommand(command: Command) {
+// Mettre à jour un article
+export async function updateArticle(article: Article) {
     try {
-    const commandRef = doc(db, col, command._id);
-    await updateDoc(commandRef, {
-        ...command
+    const articleRef = doc(db, col, article._id);
+    await updateDoc(articleRef, {
+        ...article
     });
     } catch(err) {
         console.log(err);
     }
 }
 
-// Supprimer une commande
-export async function deleteCommand(command: Command) {
+// Supprimer un article
+export async function deleteArticle(article: Article) {
     try {
-        await deleteDoc(doc(db, col, command._id));
+        await deleteDoc(doc(db, col, article._id));
     } catch(err) {
         console.log(err);
     }

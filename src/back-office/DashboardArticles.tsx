@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import moment from 'moment';
-import { addCommand, deleteCommand, getCommands, updateCommand } from "../api/commands";
-import { Command } from "../models/Commands";
-import Status from "../components/static/Status";
+import { addArticle, deleteArticle, getArticles, updateArticle } from "../api/articles";
+import { Article } from "../models/Articles";
 
 function DashboardAdmin () {
     const [loading, setLoading] = useState(false);
-    const [commands, setCommands] = useState([] as Array<Command>);
-    const [command, setCommand] = useState({} as Command);
+    const [articles, setArticles] = useState([] as Array<Article>);
+    const [article, setArticle] = useState({} as Article);
     const [editor, setEditor] = useState('show');
 
     useEffect(() => {
@@ -16,40 +15,43 @@ function DashboardAdmin () {
 
     const _fetchData = async () => {
         setLoading(true);
-        let data = await getCommands();
-        setCommands(data.sort(_sortCommands));
+        let data = await getArticles();
+        setArticles(data.sort(_sortArticles));
         setLoading(false);
     }
 
-    // Trie les commandes par ordre décroissant selon la date de création
-    const _sortCommands = (a: Command, b: Command) => {
+    // Trie les articles par ordre décroissant selon la date de création
+    const _sortArticles = (a: Article, b: Article) => {
         if(a.createdAt.toDate() < b.createdAt.toDate()) return 1
-        else if(a.createdAt.toDate() > b.createdAt.toDate()) return -1
+        else if(a.createdAt.toDate() >b.createdAt.toDate()) return -1
         return 0;
     }
 
-    const _formCommand = (command: Command, editor: string) => {
-        setCommand(command);
+    const _formArticle = (article: Article, editor: string) => {
+        setArticle(article);
         setEditor(editor);
     }
     
-    const _addCommand = async () => {
-        await addCommand();
-        await _fetchData();
-    }
-
-    const _updateCommand = async (event : React.FormEvent<HTMLFormElement>) => {
+    const _addArticle = async (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Modifie la commande sur firebase
-        await updateCommand(command);
+        console.log(article)
+        await addArticle(article);
         await _fetchData();
         setEditor('show');
     }
 
-    const _deleteCommand = async (event : React.FormEvent<HTMLFormElement>) => {
+    const _updateArticle = async (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // Supprime la commande sur firebase
-        await deleteCommand(command);
+        // Modifie l'article sur firebase
+        await updateArticle(article);
+        await _fetchData();
+        setEditor('show');
+    }
+
+    const _deleteArticle = async (event : React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        // Supprime l'article sur firebase
+        await deleteArticle(article);
         await _fetchData();
         setEditor('show');
     }
@@ -61,14 +63,14 @@ function DashboardAdmin () {
         
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
-                    <h1 className="text-xl font-semibold">Commandes</h1>
+                    <h1 className="text-xl font-semibold">Articles</h1>
                 </div>
             </div>
             {!loading ?
                 editor === 'show' ?
                 <div>
                     <div>
-                        <button type='button' onClick={() => _addCommand()} className="hover:border-indigo-600 text-indigo-600 hover:text-indigo-900">Ajout commande</button>
+                        <button type='button' onClick={() => _formArticle({} as Article, 'add')} className="hover:border-indigo-600 text-indigo-600 hover:text-indigo-900">Ajouter un article</button>
                     </div>
                     <div className="mt-8 flex flex-col">
                         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -77,30 +79,26 @@ function DashboardAdmin () {
                                     <table className="min-w-full divide-y divide-gray-300">
                                         <thead className="bg-gray-50">
                                         <tr>
-                                            <th scope="col" className="py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-6">Client</th>
-                                            <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Articles</th>
+                                            <th scope="col" className="py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-6">Nom</th>
                                             <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Prix</th>
-                                            <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Statut</th>
                                             <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Date</th>
                                             <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-200 bg-white">
-                                            {commands.length > 0 ?
-                                                commands.map((command, index) => 
+                                            {articles.length > 0 ?
+                                                articles.map((article, index) => 
                                                     <tr key={index}>
                                                         <td className="whitespace py-4 pl-4 pr-3">
-                                                            <div className="text-sm font-medium text-gray-900 sm:pl-6">{command.client}</div>
+                                                            <div className="text-sm font-medium text-gray-900 sm:pl-6">{article.name}</div>
                                                         </td>
-                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.articles}</td>
-                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.price + ' €'}</td>
-                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.status}</td>
-                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{moment(command.createdAt.toDate()).format('DD/MM/yyyy')}</td>
+                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{article.price + ' €'}</td>
+                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{moment(article.createdAt.toDate()).format('DD/MM/yyyy')}</td>
                                                         <td className="relative flex justify-evenly whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                            <button type='button' onClick={() => _formCommand(command, 'modify')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                            <button type='button' onClick={() => _formArticle(article, 'modify')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                                                 Modifier
                                                             </button>
-                                                            <button type='button' onClick={() => _formCommand(command, 'delete')} className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
+                                                            <button type='button' onClick={() => _formArticle(article, 'delete')} className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
                                                                 Supprimer
                                                             </button>
                                                         </td>
@@ -114,83 +112,67 @@ function DashboardAdmin () {
                         </div>
                     </div>
                 </div>
-                : editor === 'modify' ?
+                : editor === 'add' || editor === 'modify' ?
                     <div className="center-page flex flex-col">
-                        <form onSubmit={(e) => _updateCommand(e)} className="form-card">
+                        <form onSubmit={(e) => editor === 'add' ? _addArticle(e) : _updateArticle(e)} className="form-card">
                             <p className="font-bold">Modifier l'article</p>
                             <div className="relative mt-4 rounded-md shadow-sm">
                                 <label htmlFor="text" className="flex flex-start text-sm font-medium text-gray-700">
-                                    Client
+                                    Nom de l'article
                                 </label>
                                 <input 
+                                    required
                                     id='text' 
                                     type="text"
-                                    value={command.client} 
-                                    onChange={(e) => setCommand({ ...command, client: e.target.value})} 
+                                    value={article.name ? article.name : ''} 
+                                    onChange={(e) => setArticle({ ...article, name: e.target.value})} 
                                     className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
-                            <div className="relative mt-3 rounded-md shadow-sm">
-                                <label htmlFor="articles" className="flex flex-start text-sm font-medium text-gray-700">
-                                    Articles
-                                </label>
-                                <input 
-                                    disabled
-                                    id='articles'
-                                    type='string'
-                                    value={command.articles} 
-                                    className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                            </div>
-                            <div className="relative mt-3 rounded-md shadow-sm">
+                            <div className="relative mt-3">
                                 <label htmlFor="price" className="flex flex-start text-sm font-medium text-gray-700">
                                     Prix
                                 </label>
-                                <input 
-                                    disabled
+                                <input
+                                    required
+                                    min={0}
                                     id='price'
-                                    type='string'
-                                    value={command.price.toString() + ' €'} 
-                                    className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    type="number"
+                                    step="0.01"
+                                    value={article.price ? article.price.toString() : 0} 
+                                    onChange={(e) => setArticle({ ...article, price: Number(e.target.value)})} 
+                                    className="block w-full rounded-md shadow-sm border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
-                            <div className="relative mt-3 rounded-md shadow-sm">
-                                <label htmlFor="status" className="flex flex-start text-sm font-medium text-gray-700">
-                                    Statut
-                                </label>
-                                <select className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" id="status" data-te-select-init required value={command.status} onChange={(e) => setCommand({ ...command, status: e.target.value})}>
-                                    {Status.ALL_STATUS.map((status, index) => 
-                                        <option key={index} value={status}>{status}</option>
-                                    )}
-                                </select>
-                            </div>
-                            <div className="relative mt-3 rounded-md shadow-sm">
-                                <label htmlFor="date" className="flex flex-start text-sm font-medium text-gray-700">
-                                    Date de la commande
-                                </label>
-                                <input 
-                                    disabled
-                                    id='date'
-                                    type='string'
-                                    value={moment(command.createdAt.toDate()).format('DD/MM/yyyy à HH:mm')} 
-                                    className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                            </div>
-                            <div className="mt-4 flex justify-between">
+                            {editor === 'modify' ?
+                                <div className="relative mt-3 rounded-md shadow-sm">
+                                    <label htmlFor="date" className="flex flex-start text-sm font-medium text-gray-700">
+                                        Date de création de l'article
+                                    </label>
+                                    <input 
+                                        disabled
+                                        id='date'
+                                        type='string'
+                                        value={moment(article.createdAt.toDate()).format('DD/MM/yyyy à HH:mm')} 
+                                        className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    />
+                                </div>
+                            : null}
+                            <div className="mt-5 flex justify-between">
                                 <button type="button" onClick={() => setEditor('show')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Annuler
                                 </button>
                                 <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Modifier
+                                    {editor === 'add' ? 'Ajouter' : 'Modifier'}
                                 </button>
                             </div>
                         </form>
                     </div>
                 : editor === 'delete' ?
                     <div className="center-page flex flex-col">
-                        <form onSubmit={(e) => _deleteCommand(e)} className="form-card">
-                            <p className="font-bold">Commande de {command.client} le {moment(command.createdAt.toDate()).format('DD/MM/yyyy à HH:mm')} pour {command.price.toString()}€.</p>
-                            <p>Êtes-vous sûr de vouloir supprimer cette commande ?</p>
+                        <form onSubmit={(e) => _deleteArticle(e)} className="form-card">
+                            <p className="font-bold">{article.name}</p>
+                            <p>Êtes-vous sûr de vouloir supprimer cet article ?</p>
                             <div className="mt-4 flex justify-between w-full">
                                 <button type="button" onClick={() => setEditor('show')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Annuler
