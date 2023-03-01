@@ -15,6 +15,7 @@ function DashboardAdmin () {
 
     const _fetchData = async () => {
         setLoading(true);
+        // Récupère tous les articles
         let data = await getArticles();
         setArticles(data.sort(_sortArticles));
         setLoading(false);
@@ -27,6 +28,7 @@ function DashboardAdmin () {
         return 0;
     }
 
+    // Définit la commande sélectionnée et change l'affichage selon le formulaire choisit
     const _formArticle = (article: Article, editor: string) => {
         setArticle(article);
         setEditor(editor);
@@ -34,7 +36,7 @@ function DashboardAdmin () {
     
     const _addArticle = async (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(article)
+        // Ajoute l'article sur firebase
         await addArticle(article);
         await _fetchData();
         setEditor('show');
@@ -80,6 +82,7 @@ function DashboardAdmin () {
                                         <thead className="bg-gray-50">
                                         <tr>
                                             <th scope="col" className="py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-6">Nom</th>
+                                            <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Description</th>
                                             <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Prix</th>
                                             <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Date</th>
                                             <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Actions</th>
@@ -92,15 +95,18 @@ function DashboardAdmin () {
                                                         <td className="whitespace py-4 pl-4 pr-3">
                                                             <div className="text-sm font-medium text-gray-900 sm:pl-6">{article.name}</div>
                                                         </td>
+                                                        <td className="px-3 py-4 text-sm text-gray-500">{article.description}</td>
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{article.price + ' €'}</td>
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{moment(article.createdAt.toDate()).format('DD/MM/yyyy')}</td>
-                                                        <td className="relative flex justify-evenly whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                            <button type='button' onClick={() => _formArticle(article, 'modify')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                                Modifier
-                                                            </button>
-                                                            <button type='button' onClick={() => _formArticle(article, 'delete')} className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
-                                                                Supprimer
-                                                            </button>
+                                                        <td className="whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
+                                                            <div className="flex justify-evenly">
+                                                                <button type='button' onClick={() => _formArticle(article, 'modify')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                                    Modifier
+                                                                </button>
+                                                                <button type='button' onClick={() => _formArticle(article, 'delete')} className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 ml-5 rounded">
+                                                                    Supprimer
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -117,12 +123,12 @@ function DashboardAdmin () {
                         <form onSubmit={(e) => editor === 'add' ? _addArticle(e) : _updateArticle(e)} className="form-card">
                             <p className="font-bold">Modifier l'article</p>
                             <div className="relative mt-4 rounded-md shadow-sm">
-                                <label htmlFor="text" className="flex flex-start text-sm font-medium text-gray-700">
+                                <label htmlFor="name" className="flex flex-start text-sm font-medium text-gray-700">
                                     Nom de l'article
                                 </label>
                                 <input 
                                     required
-                                    id='text' 
+                                    id='name' 
                                     type="text"
                                     value={article.name ? article.name : ''} 
                                     onChange={(e) => setArticle({ ...article, name: e.target.value})} 
@@ -142,6 +148,19 @@ function DashboardAdmin () {
                                     value={article.price ? article.price.toString() : 0} 
                                     onChange={(e) => setArticle({ ...article, price: Number(e.target.value)})} 
                                     className="block w-full rounded-md shadow-sm border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                            <div className="relative mt-4 rounded-md shadow-sm">
+                                <label htmlFor="description" className="flex flex-start text-sm font-medium text-gray-700">
+                                    Description de l'article
+                                </label>
+                                <input 
+                                    required
+                                    id='text' 
+                                    type="description"
+                                    value={article.description ? article.description : ''} 
+                                    onChange={(e) => setArticle({ ...article, description: e.target.value})} 
+                                    className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
                             {editor === 'modify' ?

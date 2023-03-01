@@ -16,6 +16,7 @@ function DashboardAdmin () {
 
     const _fetchData = async () => {
         setLoading(true);
+        // Récupère toutes les commandes
         let data = await getCommands();
         setCommands(data.sort(_sortCommands));
         setLoading(false);
@@ -28,11 +29,13 @@ function DashboardAdmin () {
         return 0;
     }
 
+    // Définit la commande sélectionnée et change l'affichage selon le formulaire choisit
     const _formCommand = (command: Command, editor: string) => {
         setCommand(command);
         setEditor(editor);
     }
     
+    // Créé automatique une commande (uniquement en dev)
     const _addCommand = async () => {
         await addCommand();
         await _fetchData();
@@ -92,17 +95,23 @@ function DashboardAdmin () {
                                                         <td className="whitespace py-4 pl-4 pr-3">
                                                             <div className="text-sm font-medium text-gray-900 sm:pl-6">{command.client}</div>
                                                         </td>
-                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.articles}</td>
+                                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                            <span title={command.articles?.map((article, index)=> article.name) as any}>
+                                                                    {command.articles?.length}
+                                                            </span>
+                                                        </td>
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.price + ' €'}</td>
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.status}</td>
                                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{moment(command.createdAt.toDate()).format('DD/MM/yyyy')}</td>
-                                                        <td className="relative flex justify-evenly whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                            <button type='button' onClick={() => _formCommand(command, 'modify')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                                Modifier
-                                                            </button>
-                                                            <button type='button' onClick={() => _formCommand(command, 'delete')} className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
-                                                                Supprimer
-                                                            </button>
+                                                        <td className="whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
+                                                            <div className="flex justify-evenly">
+                                                                <button type='button' onClick={() => _formCommand(command, 'modify')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                                    Modifier
+                                                                </button>
+                                                                <button type='button' onClick={() => _formCommand(command, 'delete')} className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
+                                                                    Supprimer
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 )
@@ -130,17 +139,18 @@ function DashboardAdmin () {
                                     className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
-                            <div className="relative mt-3 rounded-md shadow-sm">
+                            {/* L'admin n'a pas le droit de modifier les articles, il doit passer la commande en annulé s'il y a un problème avec un article */}
+                            <div className="relative mt-3 rounded-md">
                                 <label htmlFor="articles" className="flex flex-start text-sm font-medium text-gray-700">
-                                    Articles
+                                    {command.articles && command.articles.length > 0 ? command.articles.length + " article" + (command.articles.length > 1 ? "s" : "") : null}
                                 </label>
-                                <input 
-                                    disabled
-                                    id='articles'
-                                    type='string'
-                                    value={command.articles} 
-                                    className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
+                                {command.articles && command.articles?.length > 0 ?
+                                    <ul className="flex">
+                                    {command.articles?.map((article, index) => 
+                                        <li key={index} className="text-sm">{"- "+ article.name + " à " + article.price + "€"}</li>
+                                    )}
+                                    </ul>
+                                : <div>Aucun article</div>}
                             </div>
                             <div className="relative mt-3 rounded-md shadow-sm">
                                 <label htmlFor="price" className="flex flex-start text-sm font-medium text-gray-700">
@@ -176,7 +186,7 @@ function DashboardAdmin () {
                                     className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
-                            <div className="mt-4 flex justify-between">
+                            <div className="mt-5 flex justify-between">
                                 <button type="button" onClick={() => setEditor('show')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                     Annuler
                                 </button>

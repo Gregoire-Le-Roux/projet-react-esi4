@@ -15,7 +15,7 @@ export async function getArticles() {
                 _id: doc.id,
                 ...doc.data(),
             } as Article;
-            if(article._id && article.name && article.price >= 0 && article.createdAt)
+            if(article._id && article.name && article.price >= 0 && article.description && article.createdAt)
             data.push(article);
           });
         return data;
@@ -29,7 +29,6 @@ export async function getArticles() {
 // Créer un article
 export async function addArticle(article: Article) {
     try {
-        console.log(article)
         article = {
             ...article,
             createdAt: Timestamp.now(),
@@ -46,10 +45,10 @@ export async function addArticle(article: Article) {
 // Mettre à jour un article
 export async function updateArticle(article: Article) {
     try {
-    const articleRef = doc(db, col, article._id);
-    await updateDoc(articleRef, {
-        ...article
-    });
+        const articleRef = doc(db, col, article._id);
+        await updateDoc(articleRef, {
+            ...article
+        });
     } catch(err) {
         console.log(err);
     }
