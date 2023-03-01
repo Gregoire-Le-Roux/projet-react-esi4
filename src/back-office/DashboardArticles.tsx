@@ -155,10 +155,10 @@ function DashboardAdmin () {
                                     <label htmlFor="description" className="flex flex-start text-sm font-medium text-gray-700">
                                         Description de l'article
                                     </label>
-                                    <input 
+                                    <textarea 
                                         required
-                                        id='text' 
-                                        type="description"
+                                        id='description'
+                                        rows={3}
                                         value={article.description ? article.description : ''} 
                                         onChange={(e) => setArticle({ ...article, description: e.target.value})} 
                                         className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"

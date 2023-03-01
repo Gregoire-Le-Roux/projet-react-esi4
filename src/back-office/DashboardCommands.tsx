@@ -127,7 +127,7 @@ function DashboardAdmin () {
                     : editor === 'modify' ?
                         <div className="center-page flex flex-col">
                             <form onSubmit={(e) => _updateCommand(e)} className="form-card">
-                                <p className="font-bold">Modifier l'article</p>
+                                <p className="font-bold">Modifier la commande</p>
                                 <div className="relative mt-4 rounded-md shadow-sm">
                                     <label htmlFor="text" className="flex flex-start text-sm font-medium text-gray-700">
                                         Client
@@ -146,7 +146,7 @@ function DashboardAdmin () {
                                         {command.articles && command.articles.length > 0 ? command.articles.length + " article" + (command.articles.length > 1 ? "s" : "") : null}
                                     </label>
                                     {command.articles && command.articles?.length > 0 ?
-                                        <ul className="flex">
+                                        <ul className="flex flex-col items-start">
                                         {command.articles?.map((article, index) => 
                                             <li key={index} className="text-sm">{"- "+ article.name + " à " + article.price + "€"}</li>
                                         )}
