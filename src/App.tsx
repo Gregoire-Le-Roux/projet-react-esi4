@@ -6,6 +6,9 @@ import {
 } from "react-router-dom";
 
 import Home from "./front-office/Home"
+import Authentication from './front-office/Authentification';
+import Panier from './front-office/Panier';
+
 
 // import DashboardAdmin from './back-office/Dashboard';
 
@@ -15,7 +18,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home/>} />
-        {/* <Route path="/connexion" element={<Authentification/>} /> */}
+        <Route path="/connexion" element={<Authentication/>} />
+        <Route path="/Panier" element={<Panier/>} />
         {/* <Route path="/dashboard" element={<DashboardAdmin/>} /> */}
       </Routes>
     </Router>
