@@ -4,7 +4,8 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-// import DashboardAdmin from './back-office/Dashboard';
+import DashboardCommands from './back-office/DashboardCommands';
+import DashboardArticles from './back-office/DashboardArticles';
 
 // react-router-dom permet de définir des routes liées à des composants
 function App() {
@@ -13,7 +14,8 @@ function App() {
       <Routes>
         {/* <Route index element={<Home/>} /> */}
         {/* <Route path="/connexion" element={<Authentification/>} /> */}
-        {/* <Route path="/dashboard" element={<DashboardAdmin/>} /> */}
+        <Route path="/dashboard-commands" element={<DashboardCommands/>} />
+        <Route path="/dashboard-articles" element={<DashboardArticles/>} />
       </Routes>
     </Router>
   )
