@@ -4,7 +4,7 @@ export interface Command {
     _id: string,
     client: string,
     articles: string,
-    prix: Number,
+    price: Number,
     status: string,
-    date: Timestamp,
+    createdAt: Timestamp,
 }
