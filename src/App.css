@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+.form-card {
+  box-shadow: 7px 10px 10px 0px #595959;
+  background-color: #f4f4f4;
+  padding: 30px;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
