@@ -5,6 +5,9 @@ Groupe : Grégoire LEROUX (Back) / Florian BERTHELOT (Front)
 ### Présentation projet :
 
 Site de e-commerce gérant la vente de Surf. 
+
+Lien: https://projet-react-esi4.vercel.app/
+
 Plusieurs pages prévues :
 
 FRONT :
@@ -15,6 +18,10 @@ FRONT :
 BACK :
 - Page Commandes (6h)
 - Page Produits (4h)
+
+Des maquettes sont disponibles dans le dossier "Maquettes" à la racine du projet.
+
+### Gestion prévisionnelle : Temps total ~16h
 
 ## Outils utilisés :
 
@@ -42,7 +49,18 @@ Tailwind CSS est un framework utility-fist CSS avec des classes prédéfinies ut
 ##### Figma : (https://www.figma.com)
 Figma est un éditeur de graphiques vectoriels et un outil de prototypage. C'est à l'aide de cet outil que nous avons réalisé les maquettes.
 
+## Utiliser le projet en local
 
-### Gestion prévisionnelle : Temps total ~16h
+Pour récupérer et utiliser le projet en local, il faut tout d'abord récupèrer le dossier du projet en zip.
 
+Ensuite, se mettre à la racine du projet et installer les dépendances avec : 
+```
+pnpm install
+```
 
+Mettre en place les variables d'environnement en copiant le fichier ".env.example" en ".env" puis mettre les accès vers firebase.
+
+Enfin, lancer le projet avec la commande : 
+```
+pnpm run dev
+```

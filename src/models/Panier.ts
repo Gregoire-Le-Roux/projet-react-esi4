@@ -1,6 +1,9 @@
+import { Article } from "./Articles";
+
 export interface Panier {
     quantity: number,
-    idArticle: string
+    article:Article,
+
 }
 
 
