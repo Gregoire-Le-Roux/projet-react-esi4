@@ -58,9 +58,9 @@ function Panier() {
         <div>
             <Header/>
 
-            <div className="fixed left-48">
+            {/* <div className="fixed left-48">
                 <h1>PANIER</h1>
-            </div>
+            </div> */}
 
 
             <div>
