@@ -4,7 +4,8 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-
+import DashboardCommands from './back-office/DashboardCommands';
+import DashboardArticles from './back-office/DashboardArticles';
 import Home from "./front-office/Home"
 import Authentication from './front-office/Authentification';
 import Panier from './front-office/Panier';
@@ -21,7 +22,8 @@ function App() {
         <Route path="/" element={<Home/>} />
         <Route path="/connexion" element={<Authentication/>} />
         <Route path="/Panier" element={<Panier/>} />
-        {/* <Route path="/dashboard" element={<DashboardAdmin/>} /> */}
+        <Route path="/dashboard-commands" element={<DashboardCommands/>} />
+        <Route path="/dashboard-articles" element={<DashboardArticles/>} />
       </Routes>
     </Router>
     </AuthProvider>
