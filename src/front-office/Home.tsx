@@ -1,28 +1,32 @@
 import Header from "../components/Header"
 import Planche from "../assets/Planche.jpg"
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Surf1 from "../assets/Surf1.jpg"
+import { AuthContext } from "../config/AuthProvider";
 
 function Home(){
 
 
-    const [panier, setPanier] = useState([] as Array<any> )
     const [articles, setArticles] = useState([{name: "Surf", price: 80, description:"lorem ipsum"}] )
+    const {
+        panier,
+        setPanier,
+    } = useContext(AuthContext)
 
     
     const AjoutePanier = (article:any) => {
-        const ProductExist = panier.find(item => item._id === article._id);
+        const ProductExist = panier?.find(item => item.article._id === article._id);
         if (ProductExist) {
           setPanier(
-            panier.map(item =>
-              item._id === article._id
+            panier?.map(item =>
+              item.article._id === article._id
                 ? { ...ProductExist, quantity: ProductExist.quantity + 1 }
                 : item
             )
           );
         } else {
           setPanier([...panier, { 
-            idArticle: article._id, 
+            article: article, 
             quantity: 1 
           }]);
         }
@@ -38,7 +42,7 @@ function Home(){
             </blockquote>
         </div>
 
-        <section className=" text-gray-800 text-center md:text-left mb-3">
+        <section className="flex-row align-center text-gray-800 text-center md:text-left mb-3">
     <div className="block rounded-lg shadow-lg bg-white">
       <div className="flex flex-wrap items-center">
         <div className="grow-0 shrink-0 basis-auto block lg:flex w-full lg:w-6/12 xl:w-4/12">
@@ -104,10 +108,6 @@ function Home(){
               </div>
             </div>
             <img className="flex" src={Planche} alt="Planche"/>
-            <button type="button"
-              className="inline-block px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
-              Ajouter au panier
-            </button>
           </div>
         </div>
       </div>
@@ -116,15 +116,15 @@ function Home(){
 
 
     {articles.map(article=>
-        <div className="flex-row justify-center border-solid border-gray-900 border-2">
+        <div className="flex-row  border-solid border-gray-900 border-2">
             <div className="flex"><img className="h-32" src={Surf1} alt="Surf"/>
             <div className="flex-col justify-items-center justify-center self-center"><h4><b>{article.name}</b></h4>
             <p>{article.price}</p>
-            <p>{article.description}</p></div></div><br></br>
+            <p>{article.description}</p></div></div><br/>
             <div>
                 <button type="button"
                     onClick={()=>AjoutePanier(article)}
-                    className="flex px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+                    className="flex-row justify-items-center justify-center px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
                     Ajouter au panier
                 </button><br></br>
             </div>

@@ -28,9 +28,10 @@ export const UserStateContext = createContext<UserContextState>({} as UserContex
 export interface AuthContextModel {
   auth: Auth;
   user: User | null;
-  panier: Panier | null;
+  panier: Panier[] ;
   signIn: (email: string, password: string) => Promise<UserCredential>;
   signUp: (email: string, password: string) => Promise<UserCredential>;
+  setPanier: (panier: Panier[]) => void;
 }
 
 export const AuthContext = React.createContext<AuthContextModel>({} as AuthContextModel);
@@ -41,7 +42,7 @@ export function useAuth(): AuthContextModel {
 
 export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<User | null>(null);
-  const [panier, setPanier] = useState<Panier | null>(null);
+  const [panier, setPanier] = useState<Panier[]>([]);
 
   function signUp(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -57,6 +58,7 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     signIn,
     auth,
     panier,
+    setPanier,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
