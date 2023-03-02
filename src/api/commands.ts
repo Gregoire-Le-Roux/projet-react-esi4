@@ -18,7 +18,7 @@ export async function getCommands() {
                 _id: doc.id,
                 ...doc.data(),
             } as Command;
-            if(command._id && command.client && command.idArticles && command.price >= 0 && command.createdAt && command.status) {
+            if(command._id && command.client && command.address && command.idArticles && command.price >= 0 && command.createdAt && command.status) {
                 command.articles = [];
                 command.price = 0;
                 // On lie les idArticles aux articles existants et calcule le prix
@@ -44,6 +44,7 @@ export async function addCommand() {
     try {
         let command = {
             client: "Grégoire",
+            address: "26 Avenue Tony Garnier, 69007 Lyon",
             idArticles: ["2QPQwpCMhXQfo9zDUTPc"],
             price: 100,
             status: 'En cours',

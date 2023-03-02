@@ -85,7 +85,7 @@ function DashboardAdmin () {
                                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-6">Nom</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Description</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Prix</th>
-                                                <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Date</th>
+                                                <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Créé le</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Actions</th>
                                             </tr>
                                             </thead>
