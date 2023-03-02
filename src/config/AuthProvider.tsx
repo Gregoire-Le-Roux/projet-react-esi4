@@ -3,14 +3,11 @@ import { auth } from './firebase';
 import {
   Auth,
   UserCredential,
-  User,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { User } from '../models/Users';
 import { Panier } from '../models/Panier';
-
-
-
 
 
 export interface AuthProviderProps {
@@ -29,6 +26,8 @@ export interface AuthContextModel {
   auth: Auth;
   user: User | null;
   panier: Panier[] ;
+  setUser: (user: User) => void;
+  signOut: () => void;
   signIn: (email: string, password: string) => Promise<UserCredential>;
   signUp: (email: string, password: string) => Promise<UserCredential>;
   setPanier: (panier: Panier[]) => void;
@@ -52,10 +51,16 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  function signOut () {
+    setUser(null);
+  }
+
   const values = {
-    signUp,
     user,
+    setUser,
+    signUp,
     signIn,
+    signOut,
     auth,
     panier,
     setPanier,

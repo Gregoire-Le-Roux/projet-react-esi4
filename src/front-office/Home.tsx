@@ -5,6 +5,7 @@ import Surf1 from "../assets/Surf1.jpg"
 import { AuthContext } from "../config/AuthProvider";
 
 function Home(){
+  const { user } = useContext(AuthContext);
 
 
     const [articles, setArticles] = useState([{name: "Surf", price: 80, description:"lorem ipsum"}] )
