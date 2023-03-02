@@ -4,6 +4,10 @@ import { useContext, useEffect } from "react";
 import { AuthContext, AuthProvider } from "../config/AuthProvider";
 import {useState} from "react";
 import Surf1 from '../assets/Surf1.jpg';
+import FormCommands from "../components/FormCommands";
+
+
+
 
 function Panier() {
 
@@ -12,6 +16,7 @@ function Panier() {
         panier,
         setPanier
     } = useContext(AuthContext)
+    const [visibleForm, setVisibleForm] = useState(false)
 
     const RetirePanier = (article:any) => {
     const ProductExist = panier.find(item => item.article._id === article._id);
@@ -30,6 +35,8 @@ function Panier() {
         )
       );}
   };}
+
+    // } setPanier []
 
 
     let navigate = useNavigate();
@@ -55,6 +62,15 @@ function Panier() {
                 <h1>PANIER</h1>
             </div>
 
+
+            <div>
+                    <button type="button"
+                    onClick={()=>setVisibleForm(true)}
+                    className="fixed top-32 right-10 px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+                    Passer commande
+                    </button>
+                </div>
+            
             <div className="">
                 <button
                     type="button"
@@ -62,6 +78,10 @@ function Panier() {
                     className="fixed top-10 right-75 inline-block rounded bg-primary px-3 pt-2.5 pb-2 text-s font-black uppercase leading-normal text-purple shadow-[0_4px_9px_-4px_#3b71ca] ">
                     Retour
                 </button> 
+
+            {visibleForm? 
+            <FormCommands/>
+            :null}
 
 
             </div>
@@ -81,13 +101,21 @@ function Panier() {
                 Retirer du panier
                 </button>
                 </div> <br/>
+                
             </div>
-    </div></div>
+
+            
+    </div>
+    
+    </div>
     )}
-        
+
 
         </div>
         )
             }
+
+
+            
 
 export default Panier 

@@ -1,7 +1,6 @@
 import Logo from '../assets/Logo.png';
 import Chariot from '../assets/Panier.jpg'
 import {useNavigate} from 'react-router-dom';
-import barreblanche1 from '../assets/barreblanche1.jpg';
 import { useAuth } from '../config/AuthProvider';
 
 
@@ -32,8 +31,10 @@ export default function Header() {
 
     return (
         <div>
-            <div>
-                <img className="w-full h-32 bg-scroll fixed top-0 left-0 bg-gradient-to-r from-white to-white" src={barreblanche1} alt="Background"/>
+
+            <div className="bg-white bg-scroll fixed top-0 left-0 w-full h-32">
+  
+
             </div>
             <img className='fixed top-5 left-5 w-28' src={Logo} alt="Logo Surfed"/>
 

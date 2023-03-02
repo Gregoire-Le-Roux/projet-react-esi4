@@ -38,13 +38,13 @@ function Home(){
         
         <div className="">
             <blockquote
-            className="absolute top-48 text-xl italic text-center font-semibold dark:text-white align-middle">
+            className="relative top-40 text-xl italic text-center font-semibold dark:text-white align-middle">
              Le surf (abréviation française de l'anglais surf-riding, où riding signifie « monter » et surf « (vagues) déferlantes ») est une pratique physique individuelle de glisse sur les vagues, au bord de l'océan.
             </blockquote>
         </div>
 
         <section className="flex-row align-center text-gray-800 text-center md:text-left mb-3">
-    <div className="block rounded-lg shadow-lg bg-white">
+    <div className="flex-row items-center align-middle useContext(second) rounded-lg shadow-lg bg-white">
       <div className="flex flex-wrap items-center">
         <div className="grow-0 shrink-0 basis-auto block lg:flex w-full lg:w-6/12 xl:w-4/12">
         </div>
@@ -108,7 +108,7 @@ function Home(){
                 </p>
               </div>
             </div>
-            <img className="flex" src={Planche} alt="Planche"/>
+            <img className="flex-row justify-center items-center content-center" src={Planche} alt="Planche"/>
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@ function Home(){
 
 
     {articles.map(article=>
-        <div className="flex-row  border-solid border-gray-900 border-2">
+        <div className="border-solid border-gray-900 border-2">
             <div className="flex"><img className="h-32" src={Surf1} alt="Surf"/>
             <div className="flex-col justify-items-center justify-center self-center"><h4><b>{article.name}</b></h4>
             <p>{article.price}</p>
@@ -125,7 +125,7 @@ function Home(){
             <div>
                 <button type="button"
                     onClick={()=>AjoutePanier(article)}
-                    className="flex-row justify-items-center justify-center px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+                    className="px-7 py-3 bg-gray-800 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
                     Ajouter au panier
                 </button><br></br>
             </div>
