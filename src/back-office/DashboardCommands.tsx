@@ -36,7 +36,7 @@ function DashboardAdmin () {
         setEditor(editor);
     }
     
-    // Créé automatique une commande (uniquement en dev)
+    // Créé automatiquement une commande
     const _addCommand = async () => {
         await addCommand();
         await _fetchData();
@@ -72,7 +72,7 @@ function DashboardAdmin () {
                     editor === 'show' ?
                     <div>
                         <div>
-                            <button type='button' onClick={() => _addCommand()} className="hover:border-indigo-600 text-indigo-600 hover:text-indigo-900">Ajout commande</button>
+                            <button type='button' onClick={() => _addCommand()} className="hover:border-indigo-600 text-indigo-600 hover:text-indigo-900">Ajout automatique d'une commande</button>
                         </div>
                         <div className="mt-8 flex flex-col">
                             <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -82,10 +82,11 @@ function DashboardAdmin () {
                                             <thead className="bg-gray-50">
                                             <tr>
                                                 <th scope="col" className="py-3.5 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-6">Client</th>
+                                                <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Adresse</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Articles</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Prix</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Statut</th>
-                                                <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Date</th>
+                                                <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Commandé le</th>
                                                 <th scope="col" className="px-3 py-3.5 text-sm font-semibold text-gray-900">Actions</th>
                                             </tr>
                                             </thead>
@@ -96,6 +97,7 @@ function DashboardAdmin () {
                                                             <td className="whitespace py-4 pl-4 pr-3">
                                                                 <div className="text-sm font-medium text-gray-900 sm:pl-6">{command.client}</div>
                                                             </td>
+                                                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{command.address}</td>
                                                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                                                 <span title={command.articles?.map((article, index)=> article.name) as any}>
                                                                         {command.articles?.length}
@@ -137,6 +139,18 @@ function DashboardAdmin () {
                                         type="text"
                                         value={command.client} 
                                         onChange={(e) => setCommand({ ...command, client: e.target.value})} 
+                                        className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    />
+                                </div>
+                                <div className="relative mt-4 rounded-md shadow-sm">
+                                    <label htmlFor="adress" className="flex flex-start text-sm font-medium text-gray-700">
+                                        Adresse
+                                    </label>
+                                    <input 
+                                        id='text' 
+                                        type="adress"
+                                        value={command.address} 
+                                        onChange={(e) => setCommand({ ...command, address: e.target.value})} 
                                         className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                     />
                                 </div>
