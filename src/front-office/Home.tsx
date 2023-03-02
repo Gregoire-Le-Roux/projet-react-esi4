@@ -1,19 +1,29 @@
 import Header from "../components/Header"
 import Planche from "../assets/Planche.jpg"
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import Surf1 from "../assets/Surf1.jpg"
 import { AuthContext } from "../config/AuthProvider";
+import { getArticles } from "../api/articles";
+import { Article } from "../models/Articles";
+
 
 function Home(){
   const { user } = useContext(AuthContext);
 
+    useEffect(()=>{ 
+        fetchData()
+    },[])
 
-    const [articles, setArticles] = useState([{name: "Surf", price: 80, description:"lorem ipsum"}] )
+    const [articles, setArticles] = useState([] as Array <Article>)
     const {
         panier,
         setPanier,
     } = useContext(AuthContext)
 
+    const fetchData = async()=>{
+            let articles = await getArticles();
+            setArticles(articles)
+    }
     
     const AjoutePanier = (article:any) => {
         const ProductExist = panier?.find(item => item.article._id === article._id);
@@ -120,7 +130,7 @@ function Home(){
         <div className="border-solid border-gray-900 border-2">
             <div className="flex"><img className="h-32" src={Surf1} alt="Surf"/>
             <div className="flex-col justify-items-center justify-center self-center"><h4><b>{article.name}</b></h4>
-            <p>{article.price}</p>
+            <p>{article.price.toString()+"€"}</p>
             <p>{article.description}</p></div></div><br/>
             <div>
                 <button type="button"
